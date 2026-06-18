@@ -1,0 +1,25 @@
+#divLogin{
+    width: 20%;
+    height: 50%;
+    background-color: red;
+}
+
+#formLogin{
+    display: flex;
+}
+
+#divLabels{
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    height: 100%;
+    background-color: blue;
+}
+
+#divInputs{
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    height: 100%;
+    background-color: greenyellow;
+}
