@@ -1,28 +1,27 @@
-const mysql = require('mysql2/promise');
-const cors = require('cors');
-const bcrypt = require('bcrypt');
-require('dotenv').config();
+import mysql from 'mysql2/promise';
+import bcrypt from 'bcrypt';
+import 'dotenv/config';
 
 const pool = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'react_router',
 });
 
 export {pool};
 
 export async function checkEmail(email: string) {
     const checkAvailability = `
-        SELECT * FROM USERS WHERE EMAIL = $1 LIMIT 1;
+        SELECT * FROM USERS WHERE EMAIL = ? LIMIT 1;
     `;  // To Limit einai perito edw, alla an 3erw gw 8es
         // na deis an uparxei toulaxiston ena to bazeis 
         // gia na mhn psaxeni olo to db
-    const availability = await pool.query(checkAvailability, [email]);
+    const [rows] = await pool.query(checkAvailability, [email]);
 
     let flag: boolean;
 
-    if (availability.row.length > 0){
+    if ((rows as any[]).length > 0){
         flag = true;
     }
     else{
@@ -41,16 +40,28 @@ export async function hashFunction(password: string) {
     return hasedPassword;
 }
 
-export async function userInsert(FormData: {email: string, password: string}) {
+export async function userInsert(email: string, password: string) {
     
-    const flag = await checkEmail(FormData.email);
+    const flag = await checkEmail(email);
     
+    let status;
+
     if (!flag){
-        let hasedPassword = hashFunction(FormData.password);
-        const VALUES = [FormData.email, hasedPassword];
+        let hasedPassword = await hashFunction(password);
+        const VALUES = [email, hasedPassword];
         const insertNewUser = `
-            INSERT INTO USERS (EMAIL, PASSWORD) VALUES ($1, $2) RETURNING *;
+            INSERT INTO USERS (EMAIL, PASSWORD) VALUES (?, ?);
         `;
-        pool.query(insertNewUser, VALUES);
+        await pool.query(insertNewUser, VALUES);
+        status = 1;
+
+        return status;
+    }
+    else{
+        status = 2;
+
+        return status;
     }
 }
+
+//BALE IF MALAKA AMA EINAI KAINO GIATI APO OTI FENETAI TO KAINO DEN EINAI NULL

@@ -2,7 +2,7 @@ import { Form } from 'react-router';
 
 function Login() {
   return (
-    <body className="bg-dark text-white">
+    <div className="bg-dark text-white h-100 w-100">
         <div className="border border-secondary bg-primary text-white w-25 p-3 rounded mx-auto mt-5 shadow">
             <Form action="POST" id="formLogin">
                 <label htmlFor="Email" className='form-label'>Email:</label>
@@ -14,7 +14,7 @@ function Login() {
                 <button type="submit" className='btn btn-light mt-2'>LogIn</button>
             </Form>
         </div>
-    </body>
+    </div>
   );
 }
 export default Login; 
