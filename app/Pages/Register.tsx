@@ -2,7 +2,6 @@ import { Form, useActionData } from "react-router";
 
 function Register(){
     const actionData = useActionData() as { status: number, error?: string } | undefined;
-
     return(
         <div className="border border-secondary bg-primary text-white w-25 p-3 rounded mx-auto mt-5 shadow">
             <Form method="post" id="formRegister" key={actionData?.status === 1 ? "reset" : "form"}>
@@ -20,7 +19,7 @@ function Register(){
                 <button type="submit" className='btn btn-light mt-3'>Register</button>
             </Form>
         </div>
-    )
+    );
 }
 
 export default Register;
