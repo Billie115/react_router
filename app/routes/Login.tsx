@@ -1,6 +1,7 @@
 import { redirect, type ActionFunctionArgs } from "react-router";
 import { login } from "../Database/db.server";
 import Login from "../Pages/Login";
+import { createUserSession } from "~/Database/session.server";
 
 export async function action({ request }: ActionFunctionArgs) {
     const formData = await request.formData();
@@ -10,7 +11,7 @@ export async function action({ request }: ActionFunctionArgs) {
         let status = 0;
         status = await login(email, password);
         if(status === 1){
-          return redirect("/MainPage")
+          return createUserSession(email, "/MainPage")
         }
         return { status: 2 };
     } catch (e) {
